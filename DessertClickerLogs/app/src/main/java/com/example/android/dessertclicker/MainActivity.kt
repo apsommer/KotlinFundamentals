@@ -78,7 +78,9 @@ class MainActivity : AppCompatActivity() {
         // create timer
         dessertTimer = DessertTimer(this.lifecycle)
 
+        // get app state from system bundle
         if (savedInstanceState != null) {
+
             revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
             dessertsSold = savedInstanceState.getInt(KEY_DESSERT_SOLD, 0)
             dessertTimer.secondsCount = savedInstanceState.getInt(KEY_TIMER_SECONDS, 0)
@@ -194,7 +196,7 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         Timber.i("onSaveInstanceState Called")
 
-        // bundle counters
+        // persist app state in system bundle
         outState.putInt(KEY_REVENUE, revenue)
         outState.putInt(KEY_DESSERT_SOLD, dessertsSold)
         outState.putInt(KEY_TIMER_SECONDS, dessertTimer.secondsCount)
