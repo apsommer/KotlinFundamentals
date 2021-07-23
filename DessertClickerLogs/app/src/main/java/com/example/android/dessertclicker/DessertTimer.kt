@@ -67,7 +67,7 @@ class DessertTimer {
     }
 
     fun stopTimer() {
-        
+
         // Removes all pending posts of runnable from the handler's queue, effectively stopping the
         // timer
         handler.removeCallbacks(runnable)
