@@ -30,9 +30,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
 
-/**
- * Fragment where the game is played
- */
+/** Fragment where the game is played */
 class GameFragment : Fragment() {
 
     // dependencies
@@ -74,21 +72,12 @@ class GameFragment : Fragment() {
         return binding.root
     }
 
-    /** Methods for buttons presses **/
-    private fun onSkip() {
-        viewModel.onSkip()
-    }
-    private fun onCorrect() {
-        viewModel.onCorrect()
-    }
+    /** Methods for buttons presses */
+    private fun onSkip() { viewModel.onSkip() }
+    private fun onCorrect() { viewModel.onCorrect() }
+    private fun onEndGame() { gameFinished() }
 
-    private fun onEndGame() {
-        gameFinished()
-    }
-
-    /**
-     * Called when the game is finished
-     */
+    /** Called when the game is finished */
     private fun gameFinished() {
         Toast.makeText(activity, "Game has just finished", Toast.LENGTH_SHORT).show()
         val action = GameFragmentDirections.actionGameToScore()
