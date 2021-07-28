@@ -26,13 +26,28 @@ import androidx.lifecycle.ViewModel
  */
 class ScoreViewModel(finalScore: Int) : ViewModel() {
 
-    // dependency
+    // track score
     private val _score = MutableLiveData<Int>()
     val score: LiveData<Int>
         get() = _score
 
+    // play again event
+    private val _eventPlayAgain = MutableLiveData<Boolean>()
+    val eventPlayAgain: LiveData<Boolean>
+        get() = _eventPlayAgain
+
     init {
         Log.i("ScoreViewModel", "Final score is $finalScore")
         _score.value = finalScore
+    }
+
+    // play again triggered
+    fun onPlayAgain() {
+        _eventPlayAgain.value = true
+    }
+
+    // reset play again flag
+    fun onPlayAgainComplete() {
+        _eventPlayAgain.value = false
     }
 }
