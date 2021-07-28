@@ -44,6 +44,4 @@ class ScoreViewModel(finalScore: Int) : ViewModel() {
     fun onPlayAgainComplete() {
         _eventPlayAgain.value = false
     }
-
-
 }

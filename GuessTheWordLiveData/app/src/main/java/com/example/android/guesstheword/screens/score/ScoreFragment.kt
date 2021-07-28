@@ -17,6 +17,7 @@
 package com.example.android.guesstheword.screens.score
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.android.guesstheword.R
+import com.example.android.guesstheword.databinding.GameFragmentBinding
 import com.example.android.guesstheword.databinding.ScoreFragmentBinding
 
 /**
@@ -33,34 +35,35 @@ import com.example.android.guesstheword.databinding.ScoreFragmentBinding
  */
 class ScoreFragment : Fragment() {
 
+    private lateinit var binding: ScoreFragmentBinding
     private lateinit var viewModel: ScoreViewModel
     private lateinit var viewModelFactory: ScoreViewModelFactory
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+            savedInstanceState: Bundle?): View? {
+        Log.i("ScoreFragment", "Called ViewModelProvider.get")
 
         // Inflate view and obtain an instance of the binding class.
-        val binding: ScoreFragmentBinding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.score_fragment,
                 container,
                 false
         )
 
-
         viewModelFactory = ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(arguments!!).score)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-                .get(ScoreViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
+
+        // Set the viewmodel for databinding - this allows the bound layout access
+        // to all the data in the ViewModel
+        binding.scoreViewModel = viewModel
 
         // Add observer for score
         viewModel.score.observe(viewLifecycleOwner, Observer { newScore ->
             binding.scoreText.text = newScore.toString()
         })
-
-        binding.playAgainButton.setOnClickListener { viewModel.onPlayAgain() }
 
         // Navigates back to game when button is pressed
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer { playAgain ->

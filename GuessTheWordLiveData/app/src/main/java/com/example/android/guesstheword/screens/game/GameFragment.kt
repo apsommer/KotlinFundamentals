@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import com.example.android.guesstheword.R
 import com.example.android.guesstheword.databinding.GameFragmentBinding
 
@@ -36,11 +37,12 @@ import com.example.android.guesstheword.databinding.GameFragmentBinding
 class GameFragment : Fragment() {
 
     private lateinit var binding: GameFragmentBinding
-
     private lateinit var viewModel: GameViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?): View? {
 
         // Inflate view and obtain an instance of the binding class
         binding = DataBindingUtil.inflate(
@@ -52,6 +54,10 @@ class GameFragment : Fragment() {
         Log.i("GameFragment", "Called ViewModelProvider.get")
 
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+
+        // Set the viewmodel for databinding - this allows the bound layout access
+        // to all the data in the ViewModel
+        binding.gameViewModel = viewModel
 
         /** Setting up LiveData observation relationship **/
         viewModel.word.observe(viewLifecycleOwner, Observer { newWord ->
@@ -68,23 +74,7 @@ class GameFragment : Fragment() {
             if (hasFinished) gameFinished()
         })
 
-        binding.correctButton.setOnClickListener { onCorrect() }
-        binding.skipButton.setOnClickListener { onSkip() }
-        binding.endGameButton.setOnClickListener { onEndGame() }
         return binding.root
-    }
-
-
-    /** Methods for buttons presses **/
-
-    private fun onSkip() {
-        viewModel.onSkip()
-    }
-    private fun onCorrect() {
-        viewModel.onCorrect()
-    }
-    private fun onEndGame() {
-        gameFinished()
     }
 
     private fun gameFinished() {
