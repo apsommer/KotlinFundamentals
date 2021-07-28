@@ -26,14 +26,18 @@ import androidx.lifecycle.ViewModel
  */
 class GameViewModel : ViewModel() {
 
-    // backing properties
-    private val _word = MutableLiveData<String>()
+    // dependencies
+    private val _word = MutableLiveData<String>() // backing property
     val word: LiveData<String>
         get() = _word
 
-    private val _score = MutableLiveData<Int>()
+    private val _score = MutableLiveData<Int>() // backing property
     val score: LiveData<Int>
         get() = _score
+
+    private val _eventGameFinished = MutableLiveData<Boolean>() // backing property
+    val eventGameFinished: LiveData<Boolean>
+        get() = _eventGameFinished
 
     // The list of words - the front of the list is the next word to guess
     private lateinit var wordList: MutableList<String>
@@ -96,14 +100,22 @@ class GameViewModel : ViewModel() {
         _score.value = _score.value?.plus(1)
         nextWord()
     }
+    fun onGameFinished() {
+        _eventGameFinished.value = true
+    }
+    fun onGameFinishedComplete() {
+        _eventGameFinished.value = false
+    }
 
     /**
      * Moves to the next word in the list.
      */
     private fun nextWord() {
-        //Select and remove a word from the list
-        if (!wordList.isEmpty()) {
-            _word.value = wordList.removeAt(0)
-        }
+
+        // end game since all words consumed
+        if (wordList.isEmpty()) onGameFinished()
+
+        // select and remove a word from the list
+        else _word.value = wordList.removeAt(0)
     }
 }
